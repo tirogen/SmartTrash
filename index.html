@@ -52,7 +52,7 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Recent Garbage</h5>
-                      <span class="h2 font-weight-bold mb-0">11.55</span>
+                      <span class="h2 font-weight-bold mb-0" id="garbage"></span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -68,8 +68,25 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Status</h5>
+                      <span class="h2 font-weight-bold mb-0" id="status"></span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                        <i class="fas fa-cog"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Recent open</h5>
-                      <span class="h2 font-weight-bold mb-0">15 xxxx</span>
+                      <span class="h4 font-weight-bold mb-0" id="recent_open"></span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -86,28 +103,11 @@
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Today open</h5>
-                      <span class="h2 font-weight-bold mb-0">25 times</span>
+                      <span class="h2 font-weight-bold mb-0" id="today_open"></span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
                         <i class="fas fa-bolt"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Status</h5>
-                      <span class="h2 font-weight-bold mb-0">Full</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-info text-white rounded-circle shadow">
-                        <i class="fas fa-cog"></i>
                       </div>
                     </div>
                   </div>
@@ -126,7 +126,7 @@
               <div class="row align-items-center">
                 <div class="col">
                   <h6 class="text-uppercase text-light ls-1 mb-1">Overview</h6>
-                  <h2 class="text-white mb-0">Volume of times open</h2>
+                  <h2 class="text-white mb-0">Garbage 12 hours history</h2>
                 </div>
               </div>
             </div>
@@ -134,7 +134,7 @@
               <!-- Chart -->
               <div class="chart">
                 <!-- Chart wrapper -->
-                <canvas id="chart-sales" class="chart-canvas"></canvas>
+                <canvas id="garbage_history" class="chart-canvas"></canvas>
               </div>
             </div>
           </div>
@@ -145,15 +145,14 @@
               <div class="row align-items-center">
                 <div class="col">
                   <h6 class="text-uppercase text-muted ls-1 mb-1">Stats</h6>
-                  <h2 class="mb-0">Times open</h2>
+                  <h2 class="mb-0">Open time</h2>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <!-- Chart -->
-              <div class="chart">
-                <canvas id="chart-orders" class="chart-canvas"></canvas>
-              </div>
+              <table class="table align-items-center table-flush">
+                <tbody id="open_time"></tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -164,7 +163,7 @@
             <div class="card-header border-0">
               <div class="row align-items-center">
                 <div class="col">
-                  <h3 class="mb-0">All stats</h3>
+                  <h3 class="mb-0">Garbage stats</h3>
                 </div>
               </div>
             </div>
@@ -173,16 +172,11 @@
               <table class="table align-items-center table-flush">
                 <thead class="thead-light">
                   <tr>
+                    <th scope="col">Proportion</th>
                     <th scope="col">Time</th>
-                    <th scope="col">Type</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">2019-12-14T17:58:39Z</th>
-                    <td>Open</td>
-                  </tr>
-                </tbody>
+                <tbody id="garbage_stats"></tbody>
               </table>
             </div>
           </div>
@@ -193,15 +187,14 @@
               <div class="row align-items-center">
                 <div class="col">
                   <h6 class="text-uppercase text-muted ls-1 mb-1">Stats</h6>
-                  <h2 class="mb-0">Times close</h2>
+                  <h2 class="mb-0">Close time</h2>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <!-- Chart -->
-              <div class="chart">
-                <canvas id="chart-orders" class="chart-canvas"></canvas>
-              </div>
+              <table class="table align-items-center table-flush">
+                <tbody id="close_time"></tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -237,18 +230,158 @@
   <!--   Core   -->
   <script src="./assets/js/plugins/jquery/dist/jquery.min.js"></script>
   <script src="./assets/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/js/moment.js"></script>
   <!--   Optional JS   -->
   <script src="./assets/js/plugins/chart.js/dist/Chart.min.js"></script>
   <script src="./assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
-  <!--   Argon JS   -->
-  <script src="./assets/js/argon-dashboard.min.js?v=1.1.0"></script>
-  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <!--   Argon JS
+  <script src="./assets/js/argon-dashboard.min.js?v=1.1.0"></script> -->
+  <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase.js"></script>
   <script>
-    window.TrackJS &&
-      TrackJS.install({
-        token: "ee6fab19c5a04ac1a32a645abde4613a",
-        application: "argon-dashboard-free"
+    // TODO: Replace the following with your app's Firebase project configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBN3AkAcrPSD8qx-iSsiD1Q0n2NLEJCnWA",
+      authDomain: "smarttrash-55130.firebaseapp.com",
+      databaseURL: "https://smarttrash-55130.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+
+    var recentGarbageRef = firebase.database().ref('recentGarbage');
+    recentGarbageRef.on('value', function(snapshot) {
+      $("#garbage").text(snapshot.val());
+      if(snapshot.val()>=0.8){
+        $("#status").text("Full");
+      }else{
+        $("#status").text("Not full");
+      }
+    });
+
+    var recentOpenRef = firebase.database().ref('time/open').orderByKey().limitToLast(1);
+    recentOpenRef.on('value', function(snapshot) {
+      let date = moment(Object.values(snapshot.val())[0]).subtract(7, 'h');
+      $("#recent_open").text(date.format('dddd HH:mm:ss'));
+    });
+
+    var todayOpenRef = firebase.database().ref('time/open');
+    todayOpenRef.on('value', function(snapshot) {
+      let d = new Date();
+      d.setHours(0,0,0,0);
+      let items = Object.values(snapshot.val())
+      let result = items.filter((item) => {
+        let c = new Date(item);
+        return c>d
+      })
+      $("#today_open").text(`${result.length} times`);
+    });
+
+    var garbageHistoryRef = firebase.database().ref('garbageHistory');
+    garbageHistoryRef.on('value', function(snapshot) {
+      let d12Hago = new Date(Date.now()-1000*60*60*12);
+      let items = Object.values(snapshot.val())
+      let result = items.filter((item) => {
+        let current = new Date(item.timestamp);
+        return current>d12Hago
+      })
+
+      let x = [];
+      let y = [];
+      let startAt = moment().set({'minute': 0, 'second': 0, 'millisecond':0});
+      let endAt = moment().set({'minute': 0, 'second': 0, 'millisecond':0}).add(1, 'h');
+      let i;
+      for(i=0;i<12;i++){
+        let toY;
+        result.forEach(item => {
+          let time = moment(item.timestamp).subtract(7, 'h');
+          if((i==0 && time>startAt)||(i!=0 && time>startAt && time<endAt)){
+            toY = item.quantity;
+          }
+        });
+        y.push(toY)
+        //lastest value of 12.xxxx is in 12.00
+        x.push(startAt.format("HH"))
+        startAt.subtract(1, 'h')
+        endAt.subtract(1, 'h')
+      }
+
+      new Chart(document.getElementById('garbage_history').getContext('2d'), {
+          type: 'line',
+          data: {
+              labels: x.reverse(),
+              datasets: [{
+                  label: 'Trash level',
+                  borderWidth: 4,
+                  borderColor: '#5e71e4',
+                  data: y.reverse(),
+                  pointStyle: 'triangle',
+                  steppedLine: true
+              }]
+          },
+          options: {
+            legend: {
+               display: false
+            },
+            scales: {
+              yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  fontColor: "#8494a6",
+                  fontSize: 16,
+                  labelString: 'proportion'
+                },
+                ticks: {
+                  fontColor: "#8494a6",
+                  fontSize: 16
+                }
+              }],
+              xAxes: [{
+                scaleLabel: {
+                  display: true,
+                  fontColor: "#8494a6",
+                  fontSize: 16,
+                  labelString: 'time'
+                },
+                ticks: {
+                  fontColor: "#8494a6",
+                  fontSize: 16
+                }
+              }]
+            },
+          }
       });
+
+
+    });
+
+    var openTimeRef = firebase.database().ref('time/open').orderByKey().limitToLast(10);
+    openTimeRef.on('value', function(snapshot) {
+      let items = Object.values(snapshot.val()).reverse()
+      let result = '';
+      items.forEach(item => {
+        result += '<tr><th scope="row">'+moment(item).subtract(7, 'h').format('dddd, D MMMM YYYY, HH:mm:ss')+'</th></tr>';
+      })
+      $("#open_time").html(result);
+    });
+
+    var closeTimeRef = firebase.database().ref('time/close').orderByKey().limitToLast(10);
+    closeTimeRef.on('value', function(snapshot) {
+      let items = Object.values(snapshot.val()).reverse()
+      let result = '';
+      items.forEach(item => {
+        result += '<tr><th scope="row">'+moment(item).subtract(7, 'h').format('dddd, D MMMM YYYY, HH:mm:ss')+'</th></tr>';
+      })
+      $("#close_time").html(result);
+    });
+
+    var garbageStatsRef = firebase.database().ref('garbageHistory').orderByKey().limitToLast(50);
+    garbageStatsRef.on('value', function(snapshot) {
+      let items = Object.values(snapshot.val()).reverse()
+      let result = '';
+      items.forEach(item => {
+        result += '<tr><th scope="row">'+item.quantity+'</th><th>'+moment(item.timestamp).subtract(7, 'h').format('dddd, D MMMM YYYY, HH:mm:ss')+'</th></tr>';
+      })
+      $("#garbage_stats").html(result);
+    });
   </script>
 </body>
 
