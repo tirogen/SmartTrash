@@ -259,11 +259,10 @@
 
     var todayOpenRef = firebase.database().ref('time/open');
     todayOpenRef.on('value', function(snapshot) {
-      let d = new Date();
-      d.setHours(0,0,0,0);
+      let d = moment().set({'minute': 0, 'second': 0, 'millisecond':0})
       let items = Object.values(snapshot.val())
       let result = items.filter((item) => {
-        let c = new Date(item);
+        let c = moment(item).subtract(7, 'h');
         return c>d
       })
       $("#today_open").text(`${result.length} times`);
