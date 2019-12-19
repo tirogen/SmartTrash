@@ -346,7 +346,7 @@
 
     });
 
-    var openTimeRef = firebase.database().ref('time/open').orderByKey().limitToLast(10);
+    var openTimeRef = firebase.database().ref('time/open').orderByKey().limitToLast(7);
     openTimeRef.on('value', function(snapshot) {
       let items = Object.values(snapshot.val()).reverse()
       let result = '';
@@ -356,7 +356,7 @@
       $("#open_time").html(result);
     });
 
-    var closeTimeRef = firebase.database().ref('time/close').orderByKey().limitToLast(10);
+    var closeTimeRef = firebase.database().ref('time/close').orderByKey().limitToLast(50);
     closeTimeRef.on('value', function(snapshot) {
       let items = Object.values(snapshot.val()).reverse()
       let result = '';
