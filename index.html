@@ -259,7 +259,7 @@
 
     var todayOpenRef = firebase.database().ref('time/open');
     todayOpenRef.on('value', function(snapshot) {
-      let d = moment().set({'minute': 0, 'second': 0, 'millisecond':0})
+      let d = moment().set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond':0})
       let items = Object.values(snapshot.val())
       let result = items.filter((item) => {
         let c = moment(item).subtract(7, 'h');
